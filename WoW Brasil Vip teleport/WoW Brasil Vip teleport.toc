@@ -1,0 +1,5 @@
+## Interface: 40100
+## Title: WoW Brasil Vip teleport
+## Author: Zaraki
+## Notes: Basta clicar no mapa segurando shift em algum lugar que mostre nome do local ao passar o mouse em cima
+WoW Brasil Vip teleport.lua

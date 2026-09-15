@@ -1,0 +1,7 @@
+## Interface: 30300
+## Title: GroupAnalyse
+## Author: Kiki/Espêrance From European Cho'gall - Conseil des Ombres (Horde)
+## Version: 3.6
+## Notes: Analyse group status each time there is a change. Should be used by all addons, to prevent too much system calls
+## DefaultState: Enabled
+GroupAnalyse.xml

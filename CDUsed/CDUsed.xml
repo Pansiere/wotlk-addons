@@ -1,0 +1,173 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+  <Script file="CDUsed.lua"/> 
+
+	<Frame name="CU_ConfigMenu" inherits="UIDropDownMenuTemplate">
+		<Scripts>
+			<OnLoad>
+				CUM_OnLoad();
+			</OnLoad>
+		</Scripts>
+	</Frame>
+
+	<ScrollingMessageFrame name="CU_ChatFrame" frameStrata="MEDIUM" hidden="true" inherits="FloatingChatFrameTemplate"  clampedToScreen="true" dontSavePosition="false">
+		<Size>
+			<AbsDimension x="430" y="120"/>
+		</Size>
+		<Anchors>
+			<Anchor point="BOTTOMLEFT">
+				<Offset>
+					<AbsDimension x="32" y="395"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Scripts>
+			<OnLoad>
+				self:SetClampRectInsets(-28, 0, 30, 0);
+				self:SetMaxLines(5000);
+				self.flashTimer = 0;
+				--CU_ChatFrameUpButton:SetFrameStrata("LOW");
+				--CU_ChatFrameDownButton:SetFrameStrata("LOW");
+				--CU_ChatFrameBottomButton:SetFrameStrata("LOW");
+			</OnLoad>
+			<OnEvent></OnEvent>
+			<OnMouseWheel>CU_OnMouseWheel(self,delta);</OnMouseWheel>
+		</Scripts>
+	</ScrollingMessageFrame>
+
+	<Frame name="CU_ChatFrameTab" frameStrata="MEDIUM" parent="CU_ChatFrame">
+		<Anchors>
+			<Anchor point="BOTTOMLEFT" relativeTo="CU_ChatFrame" relativePoint="TOPLEFT">
+				<Offset>
+					<AbsDimension x="0" y="3"/>
+				</Offset>
+			</Anchor>
+			<Anchor point="TOPRIGHT" relativeTo="CU_ChatFrame" relativePoint="TOPRIGHT">
+				<Offset>
+					<AbsDimension x="0" y="30"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentLeft" file="Interface\Minimap\UI-Minimap-Border">
+					<Size>
+						<AbsDimension x="14" y="27"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+					</Anchors>
+					<TexCoords left="0.3164" right="0.371" top="0.0" bottom="0.07"/>
+				</Texture>
+				<Texture name="$parentRight" file="Interface\Minimap\UI-Minimap-Border">
+					<Size>
+						<AbsDimension x="14" y="27"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT"/>
+					</Anchors>
+					<TexCoords left="0.371" right="0.3164" top="0.0" bottom="0.07"/>
+				</Texture>
+				<Texture name="$parentMiddle" file="Interface\Minimap\UI-Minimap-Border">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parentLeft" relativePoint="BOTTOMRIGHT"/>
+						<Anchor point="TOPRIGHT" relativeTo="$parentRight" relativePoint="TOPLEFT"/>
+					</Anchors>
+					<TexCoords left="0.371" right="0.85156" top="0.0" bottom="0.07"/>
+				</Texture>
+				<Texture name="$parentGlow" file="Interface\ChatFrame\ChatFrameTab-NewMessage" parentKey="glow" alphaMode="ADD" hidden="true">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" x="8"/>
+						<Anchor point="BOTTOMRIGHT" x="-8"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="$parentText" inherits="GameFontNormalSmall" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="200" y="8"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="-2"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parentButton" >
+				<Size>
+					<AbsDimension x="5" y="32"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentLeft">
+						<Offset>
+							<AbsDimension x="0" y="-7"/>
+						</Offset>
+					</Anchor>
+					<Anchor point="RIGHT" relativeTo="$parentRight">
+						<Offset>
+							<AbsDimension x="0" y="-7"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:RegisterForDrag("LeftButton");
+						self:RegisterForClicks("RightButtonDown");
+					</OnLoad>
+					<OnClick>
+						if(button == "RightButton")
+						then
+							ToggleDropDownMenu(1,nil,CU_ConfigMenu,"cursor");
+						end
+					</OnClick>
+					<OnDragStart>
+						CU_ChatFrame:StartMoving();
+					</OnDragStart>
+					<OnDragStop>
+						CU_ChatFrame:StopMovingOrSizing();
+					</OnDragStop>
+				</Scripts>
+			</Button>
+		</Frames>
+	</Frame>
+	<Button name="$parentCloseButton" inherits="UIPanelCloseButton" parent="CU_ChatFrame" frameStrata="MEDIUM">
+		<Anchors>
+			<Anchor point="RIGHT" relativeTo="CU_ChatFrameTab" relativePoint="RIGHT">
+				<Offset>
+					<AbsDimension x="-1" y="-2"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Scripts>
+			<OnLoad>
+				self:SetFrameLevel(CU_ChatFrameTabButton:GetFrameLevel() + 1);
+			</OnLoad>
+		</Scripts>
+	</Button>
+	<Button name="$parentResetButton" parent="CU_ChatFrame" frameStrata="MEDIUM">
+		<Size>
+			<AbsDimension x="16" y="16"/>
+		</Size>
+		<Anchors>
+			<Anchor point="RIGHT" relativeTo="$parentCloseButton" relativePoint="LEFT">
+				<Offset>
+					<AbsDimension x="4" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Scripts>
+			<OnLoad>
+				self:SetFrameLevel(CU_ChatFrameTabButton:GetFrameLevel() + 1);
+			</OnLoad>
+			<OnClick>
+				CU_ChatFrame:Clear();
+			</OnClick>
+		</Scripts>
+		<NormalTexture file="Interface\Addons\CDUsed\icon-reset"/>
+	</Button>
+
+</Ui>

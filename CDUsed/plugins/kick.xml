@@ -1,0 +1,198 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+  <Script file="kick.lua"/> 
+
+	<Frame name="CU_Kick_ConfigMenu" inherits="UIDropDownMenuTemplate">
+		<Scripts>
+			<OnLoad>
+				CU_Kick_ConfigMenu_OnLoad(self);
+			</OnLoad>
+		</Scripts>
+	</Frame>
+
+	<Frame name="CU_Kick_KickerMenu" inherits="UIDropDownMenuTemplate">
+		<Scripts>
+			<OnLoad>
+				CU_Kick_KickerMenu_OnLoad(self);
+			</OnLoad>
+		</Scripts>
+	</Frame>
+
+
+  <Frame name="CU_Kick_BarTemplate" virtual="true" enableMouse="false">
+    <Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" tile="true">
+      <BackgroundInsets>
+        <AbsInset left="6" right="6" top="2" bottom="12"/>
+      </BackgroundInsets>
+    </Backdrop>
+    <Size>
+      <AbsDimension x="206" y="16"/>
+    </Size>
+    <Layers>
+      <Layer level="BACKGROUND">
+        <Texture name="$parentIcon">
+          <Size>
+            <AbsDimension x="16" y="16"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT">
+              <Offset>
+                <AbsDimension x="-16" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+      <Layer level="OVERLAY">
+        <FontString name="$parentText" inherits="GameFontHighlight">
+          <Size>
+            <AbsDimension x="185" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOP"/>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentTimeText" inherits="GameFontHighlight" justifyH="LEFT" text="">
+          <FontHeight>
+            <AbsValue val="16"/>
+          </FontHeight>
+          <Color r="1.0" g="1.0" b="1.0"/>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parent" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="0" y="1.5"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <Texture name="$parentBorder" file="Interface\Tooltips\UI-StatusBar-Border">
+          <Size>
+            <AbsDimension x="206" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset>
+                <AbsDimension x="0" y="2"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+    </Layers>
+
+    <Frames>
+      <Button name="$parentResizeRight" jumpNavigateEnabled="false" hidden="true">
+        <Size>
+          <AbsDimension x="16" y="16"/>
+        </Size>
+        <Anchors>
+          <Anchor point="RIGHT" relativeTo="$parent" relativePoint="RIGHT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnLoad>
+            self:SetFrameLevel(self:GetParent():GetFrameLevel() + 10);
+          </OnLoad>
+          <OnMouseDown>
+            self:GetParent():StartSizing("RIGHT");
+          </OnMouseDown>
+          <OnMouseUp>
+            self:GetParent():StopMovingOrSizing();
+          </OnMouseUp>
+        </Scripts>
+      </Button>
+      <StatusBar name="$parentStatusBar">
+        <Size>
+          <AbsDimension x="206" y="13"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOP">
+            <Offset>
+              <AbsDimension x="0" y="-2"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+       <Layers>
+          <Layer level="OVERLAY">
+            <Texture name="$parentSpark" alphaMode="ADD" file="Interface\CastingBar\UI-CastingBar-Spark">
+              <Size>
+                <AbsDimension x="16" y="20"/>
+              </Size>
+              <Anchors>
+                <Anchor point="CENTER"/>
+              </Anchors>
+            </Texture>
+          </Layer>
+        </Layers>
+        <BarTexture file="Interface\TargetingFrame\UI-StatusBar"/>
+        <BarColor r="0.2" g="0.9" b="0.1"/>
+        <Scripts>
+          <OnLoad>
+            self:SetFrameLevel(self:GetFrameLevel() - 1);
+            self:SetMinMaxValues(0,100);
+          </OnLoad>
+        </Scripts>
+      </StatusBar>
+    </Frames>
+    <Scripts>
+      <OnLoad>
+        self:SetScript("OnSizeChanged",CU_Kick_SizeChanged); -- Has to be set here instead of in XML for now due to OnSizeChanged scripts getting run before OnLoad scripts.
+        self:SetResizable(1);
+      </OnLoad>
+      <OnMouseUp>
+        if(button == "RightButton")
+        then
+          ToggleDropDownMenu(1,self:GetID(),CU_Kick_KickerMenu,"cursor");
+        end
+      </OnMouseUp>
+    </Scripts>
+  </Frame>
+
+  <Frame name="CU_Anchor" toplevel="true" movable="true" enableMouse="true" frameStrata="LOW" hidden="true">
+    <Frames>
+      <CheckButton name="CU_AnchorButton" hidden="false" setAllPoints="true">
+        <Scripts>
+          <OnLoad>
+            self:RegisterForDrag("LeftButton");
+            self:RegisterForClicks("LeftButtonUp","RightButtonUp");
+          </OnLoad>
+          <OnClick>
+            CU_Kick_Anchor_OnClick(self,button);
+          </OnClick>
+          <OnDragStart>
+            if(self:GetParent().locked == false)
+            then
+              self:GetParent():StartMoving();
+            end
+          </OnDragStart>
+          <OnDragStop>
+            self:GetParent():StopMovingOrSizing();
+          </OnDragStop>
+        </Scripts>
+        <NormalTexture file="Interface\AddOns\CDUsed\plugins\draghandle" />
+        <CheckedTexture file="Interface\AddOns\CDUsed\plugins\draghandle-checked" />
+      </CheckButton>
+    </Frames>
+    <Scripts>
+    </Scripts>
+    <Size>
+      <AbsDimension x="16" y="16" />
+    </Size>
+    <Anchors>
+      <Anchor point="CENTER" relativeTo="UIParent" relativePoint="CENTER"/>
+    </Anchors>
+  </Frame>
+
+  <Frame name="CU_KickMainFrame" hidden="true">
+    <Scripts>
+      <OnUpdate>
+        CU_Kick_OnUpdate(self,elapsed);
+      </OnUpdate>
+    </Scripts>
+  </Frame>
+
+
+</Ui>
+

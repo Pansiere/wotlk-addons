@@ -1,0 +1,29 @@
+------------------------------------------------------------------------
+r22 | webiz | 2010-06-25 23:03:03 +0000 (Fri, 25 Jun 2010) | 1 line
+Changed paths:
+   A /tags/1.4 (from /trunk:21)
+
+Tagging as 1.4
+------------------------------------------------------------------------
+r21 | webiz | 2010-06-25 22:58:11 +0000 (Fri, 25 Jun 2010) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+Add check when no heal or absorbs
+------------------------------------------------------------------------
+r20 | webiz | 2010-06-25 22:48:37 +0000 (Fri, 25 Jun 2010) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+Fix graph
+------------------------------------------------------------------------
+r17 | webiz | 2010-06-15 19:46:32 +0000 (Tue, 15 Jun 2010) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/RecountHealAndGuessedAbsorbs.toc
+   A /trunk/locales/Core-esES.lua
+   M /trunk/locales/Core-frFR.lua
+   A /trunk/locales/Core-zhTW.lua
+
+Add localization + little fix hps
+------------------------------------------------------------------------

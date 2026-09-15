@@ -1,0 +1,26 @@
+﻿## Interface: 30300
+## Title: RecountGuessedAbsorbs
+## Notes: A guessed absorbs main view module for Recount
+## Author: Elsia
+## OptionalDeps: Ace3, Recount
+## X-Category: Combat
+## X-Embeds: Ace3
+## X-Curse-Packaged-Version: v3.3 stable
+## X-Curse-Project-Name: RecountGuessedAbsorbs
+## X-Curse-Project-ID: recountguessedabsorbs
+## X-Curse-Repository-ID: wow/recountguessedabsorbs/mainline
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
+
+locales\RecountGuessedAbsorbs-enUS.lua
+locales\RecountGuessedAbsorbs-ruRU.lua
+locales\RecountGuessedAbsorbs-frFR.lua
+locales\RecountGuessedAbsorbs-deDE.lua
+locales\RecountGuessedAbsorbs-koKR.lua
+locales\RecountGuessedAbsorbs-esES.lua
+locales\RecountGuessedAbsorbs-zhTW.lua
+locales\RecountGuessedAbsorbs-zhCN.lua
+
+GuessedAbsorbs_Mode.lua
