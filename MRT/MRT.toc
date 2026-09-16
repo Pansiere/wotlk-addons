@@ -1,0 +1,56 @@
+## Interface: 30300
+## Title: Method Raid Tools
+## Author: ExoJdi
+## Notes: Method Raid Tools for 3.3.5a
+## X-Website: https://github.com/ExoJdi/Method-Raid-Tools-3.3.5a/
+## SavedVariables: VMRT
+## Version: v5.1.4
+## AddonCompartmentFunc: MRT_MinimapClickFunction
+## IconTexture: Interface\AddOns\MRT\media\MiniMap.tga
+Compat335.lua
+core.lua
+Functions.lua
+embeds.xml
+ExLib.lua
+localization\localization.ru.lua
+localization\localization.en.lua
+localization\localization.de.lua
+localization\localization.cn.lua
+localization\localization.tw.lua
+localization\localization.kr.lua
+localization\localization.it.lua
+localization\localization.lua
+Data.lua
+BlizzFix.lua
+Options.lua
+BossIconsPack.lua
+media\MRT_DiagonalGlyphs_meta.lua
+media\MRT_VerticalGlyphs_meta.lua
+DiagonalGlyphAtlas.lua
+Note.lua
+ExCD2.lua
+Inspect.lua
+VisNote.lua
+Reminder.lua
+BossWatcher.lua
+InspectViewer.lua
+RaidCheck.lua
+InviteTool.lua
+RaidGroups.lua
+MarksBar.lua
+Marks.lua
+MarksSimple.lua
+Interrupts.lua
+BattleRes.lua
+Timers.lua
+RaidAttendance.lua
+Encounter.lua
+LootHistory.lua
+WhoPulled.lua
+Pets.lua
+AutoLogging.lua
+LootLink.lua
+WAChecker.lua
+Bindings.lua
+Profiles.lua
+Changelog.lua

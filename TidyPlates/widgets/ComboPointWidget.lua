@@ -1,49 +1,101 @@
-
 ------------------------------
 -- Combo Point Widget
 ------------------------------
-local comboWidgetPath = "Interface\\Addons\\TidyPlates\\Widgets\\ComboWidget\\"
-local COMBO_ART = { "1", "2", "3", "4", "5", }
+local comboWidgetPath = "Interface\\Addons\\TidyPlates\\widgets\\ComboWidget\\"
 
-local function UpdateComboPointFrame(frame, unit)
-		local points 
-		if UnitExists("target") and unit.isTarget then points = GetComboPoints("player", "target") end
-		if points and points > 0 then 
-			frame.Icon:SetTexture(comboWidgetPath..COMBO_ART[points]) 
-			frame:Show()
-		else frame:Hide() end	
-end
+local WidgetList = {}
+setmetatable(WidgetList, {__mode = "kv"})
 
-local ComboWatcher = CreateFrame("Frame", nil, WorldFrame )
-local isEnabled = false
-
-local function ComboWatcherHandler(frame, event, unitid)
-	--print(event, unitid)
-	TidyPlates:Update()
-	--if unitid == "target" then TidyPlates:Update() end
-end
-
-local function EnableComboWatcher(arg)
-	if arg then ComboWatcher:SetScript("OnEvent", ComboWatcherHandler)
-		ComboWatcher:RegisterEvent("UNIT_COMBO_POINTS")
-	else ComboWatcher:SetScript("OnEvent", nil) 
-		ComboWatcher:UnregisterEvent("UNIT_COMBO_POINTS")
+-- Update Graphics
+local function UpdateWidgetFrame(frame)
+	local points
+	if UnitExists("target") then
+		points = GetComboPoints("player", "target")
 	end
-	isEnabled = true
+	if points and points > 0 then
+		frame.Icon:SetTexture(comboWidgetPath .. tostring(points))
+		frame:Show()
+	else
+		frame:_Hide()
+	end
 end
 
-local function CreateComboPointWidget(parent)
+-- Context
+local function UpdateWidgetContext(frame, unit)
+	local guid = unit.guid
+	frame.guid = guid
+
+	-- Add to Widget List
+	if guid then
+		WidgetList[guid] = frame
+	end
+
+	-- Update Widget
+	if UnitGUID("target") == guid then
+		UpdateWidgetFrame(frame)
+	else
+		frame:_Hide()
+	end
+end
+
+local function ClearWidgetContext(frame)
+	local guid = frame.guid
+	if guid then
+		WidgetList[guid] = nil
+		frame.guid = nil
+	end
+end
+
+-- Watcher Frame
+local WatcherFrame = CreateFrame("Frame", nil, WorldFrame)
+local isEnabled = false
+WatcherFrame:RegisterEvent("UNIT_COMBO_POINTS")
+
+local function WatcherFrameHandler(frame, event, unitid)
+	local guid = UnitGUID("target")
+	if guid then
+		local widget = WidgetList[guid]
+		if widget then
+			UpdateWidgetFrame(widget)
+		end
+	end
+end
+
+local function EnableWatcherFrame(arg)
+	if arg then
+		WatcherFrame:SetScript("OnEvent", WatcherFrameHandler)
+		isEnabled = true
+	else
+		WatcherFrame:SetScript("OnEvent", nil)
+		isEnabled = false
+	end
+end
+
+-- Widget Creation
+local function CreateWidgetFrame(parent)
+	-- Required Widget Code
 	local frame = CreateFrame("Frame", nil, parent)
+	frame:Hide()
+
+	-- Custom Code
 	frame:SetHeight(32)
 	frame:SetWidth(64)
 	frame.Icon = frame:CreateTexture(nil, "OVERLAY")
 	frame.Icon:SetAllPoints(frame)
-	frame:Hide()
-	frame.Update = UpdateComboPointFrame
-	
-	if not isEnabled then EnableComboWatcher(true) end
-	
+	-- End Custom Code
+
+	-- Required Widget Code
+	frame.UpdateContext = UpdateWidgetContext
+	frame.Update = UpdateWidgetFrame
+	frame._Hide = frame.Hide
+	frame.Hide = function()
+		ClearWidgetContext(frame)
+		frame:_Hide()
+	end
+	if not isEnabled then
+		EnableWatcherFrame(true)
+	end
 	return frame
 end
 
-TidyPlatesWidgets.CreateComboPointWidget = CreateComboPointWidget
+TidyPlatesWidgets.CreateComboPointWidget = CreateWidgetFrame

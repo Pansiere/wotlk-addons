@@ -1,204 +1,266 @@
+local TidyPlates = _G.TidyPlates
+local TidyPlatesUtility = _G.TidyPlatesUtility
+TidyPlatesThemeList = TidyPlatesThemeList or {}
 
 -------------------------------------------------------------------------------------
--- Default Artwork
+-- Template
 -------------------------------------------------------------------------------------
 
 local theme = {}
-local defaultArtPath = "Interface\\Addons\\TidyPlates\\Media"
-local font =					defaultArtPath.."\\LiberationSans-Regular.ttf"
---local font =					"FONTS\\arialn.ttf"
-local nameplate_verticalOffset = -5
-local castBar_verticalOffset = -6 -- Adjust Cast Bar distance
+local defaultArtPath = "Interface\\Addons\\TidyPlates\\media"
+local font = "FONTS\\arialn.ttf"
+local EMPTY_TEXTURE = defaultArtPath .. "\\Empty"
 
 theme.hitbox = {
 	width = 149,
-	height = 37,
+	height = 40
+}
+
+theme.highlight = {
+	texture = EMPTY_TEXTURE,
+	width = 128,
+	height = 64
 }
 
 theme.healthborder = {
-	texture		 =				defaultArtPath.."\\RegularBorder",
-	glowtexture =					defaultArtPath.."\\Highlight",
-	elitetexture =					defaultArtPath.."\\EliteBorder",
+	texture = EMPTY_TEXTURE,
+	width = 0,
+	height = 64,
+	x = 0,
+	y = -5,
+	anchor = "CENTER",
+	show = true
+}
+
+theme.eliteicon = {
+	texture = EMPTY_TEXTURE,
 	width = 128,
 	height = 64,
 	x = 0,
-	y = nameplate_verticalOffset,
+	y = -5,
 	anchor = "CENTER",
+	show = false
 }
 
 theme.threatborder = {
-	texture =			defaultArtPath.."\\RegularThreat",
-	elitetexture =			defaultArtPath.."\\EliteThreat",
+	texture = EMPTY_TEXTURE,
 	width = 128,
 	height = 64,
 	x = 0,
-	y = nameplate_verticalOffset,
+	y = -5,
 	anchor = "CENTER",
+	show = true
 }
 
 theme.castborder = {
-	texture =					defaultArtPath.."\\CastStoppable",
+	texture = EMPTY_TEXTURE,
 	width = 128,
 	height = 64,
 	x = 0,
-	y = 0 +castBar_verticalOffset+nameplate_verticalOffset,
+	y = -11,
 	anchor = "CENTER",
+	show = true
 }
 
 theme.castnostop = {
-	texture = 				defaultArtPath.."\\CastNotStoppable",
+	texture = EMPTY_TEXTURE,
 	width = 128,
 	height = 64,
 	x = 0,
-	y = 0+castBar_verticalOffset+nameplate_verticalOffset,
+	y = -11,
 	anchor = "CENTER",
+	show = true
 }
 
 theme.name = {
-	typeface =					font,
+	typeface = font,
 	size = 9,
 	width = 88,
 	height = 10,
 	x = 0,
-	y = 6+nameplate_verticalOffset,
+	y = 1,
 	align = "LEFT",
 	anchor = "LEFT",
 	vertical = "BOTTOM",
 	shadow = true,
 	flags = "NONE",
+	show = true
 }
 
 theme.level = {
-	typeface =					font,
+	typeface = font,
 	size = 9,
 	width = 25,
 	height = 10,
 	x = 36,
-	y = 6+nameplate_verticalOffset,
+	y = 1,
 	align = "RIGHT",
 	anchor = "CENTER",
 	vertical = "BOTTOM",
 	shadow = true,
 	flags = "NONE",
+	show = true
 }
 
 theme.healthbar = {
-	texture =					 defaultArtPath.."\\Statusbar",
+	texture = EMPTY_TEXTURE,
+	backdrop = EMPTY_TEXTURE,
+	backdropcolor = {0, 0, 0, 0.75},
 	height = 12,
-	width = 101,
+	width = 0,
 	x = 0,
-	y = 15+nameplate_verticalOffset,
+	y = 10,
 	anchor = "CENTER",
 	orientation = "HORIZONTAL",
+	texcoord = {left = 0, right = 1, top = 0, bottom = 1},
+	linkwidth = false,
+	edgeFile = EMPTY_TEXTURE,
+	edgeSize = 1,
+	edgeInset = {left = 0, right = 0, top = 0, bottom = 0}
 }
 
 theme.castbar = {
-	texture =					defaultArtPath.."\\Statusbar",
+	texture = EMPTY_TEXTURE,
+	backdrop = EMPTY_TEXTURE,
 	height = 12,
 	width = 99,
 	x = 0,
-	y = -8+castBar_verticalOffset+nameplate_verticalOffset,
+	y = -19,
 	anchor = "CENTER",
 	orientation = "HORIZONTAL",
+	texcoord = {left = 0, right = 1, top = 0, bottom = 1},
+	linkwidth = false,
+	edgeFile = EMPTY_TEXTURE,
+	edgeSize = 1,
+	edgeInset = {left = 0, right = 0, top = 0, bottom = 0}
 }
 
-theme.specialText = {
-	typeface =					font,
+theme.spelltext = {
+	typeface = font,
 	size = 9,
 	width = 93,
 	height = 10,
 	x = 0,
-	y = 16+nameplate_verticalOffset,
+	y = 11,
 	align = "RIGHT",
 	anchor = "CENTER",
 	vertical = "BOTTOM",
 	shadow = true,
 	flags = "NONE",
+	show = false
 }
 
-theme.specialText2 = {
-	typeface =					font,
+theme.customtext = {
+	typeface = font,
 	size = 8,
 	width = 100,
 	height = 10,
 	x = 1,
-	y = castBar_verticalOffset-8+nameplate_verticalOffset,
+	y = -19,
 	align = "LEFT",
 	anchor = "CENTER",
 	vertical = "BOTTOM",
 	shadow = true,
 	flags = "NONE",
+	show = false
 }
 
-theme.specialArt = {
+theme.customart = {
 	width = 24,
 	height = 24,
 	x = -5,
-	y = 15+nameplate_verticalOffset,
+	y = 10,
 	anchor = "TOP",
+	show = false
 }
 
 theme.spellicon = {
 	width = 18,
 	height = 18,
 	x = 62,
-	y = -8+castBar_verticalOffset+nameplate_verticalOffset,
+	y = -19,
 	anchor = "CENTER",
+	show = true
 }
 
 theme.raidicon = {
 	width = 20,
 	height = 20,
 	x = -35,
-	y = 12+nameplate_verticalOffset,
+	y = 7,
 	anchor = "TOP",
+	show = true
 }
 
-theme.dangerskull = {
+theme.skullicon = {
+	texture = "Interface\\TargetingFrame\\UI-TargetingFrame-Skull",
 	width = 14,
 	height = 14,
 	x = 44,
-	y = 8+nameplate_verticalOffset,
+	y = 3,
 	anchor = "CENTER",
+	show = true
 }
 
 theme.frame = {
 	width = 101,
 	height = 45,
 	x = 0,
-	y = 0+nameplate_verticalOffset,
+	y = 0,
+	anchor = "CENTER"
+}
+
+theme.target = {
+	texture = EMPTY_TEXTURE,
+	width = 128,
+	height = 64,
+	x = 0,
+	y = -5,
 	anchor = "CENTER",
+	show = false
 }
 
--- [[
-	-- Normal
 theme.threatcolor = {
-	LOW = { r = .75, g = 1, b = 0, a= 1, },
-	MEDIUM = { r = 1, g = 1, b = 0, a = 1, },
-	HIGH = { r = 1, g = 0, b = 0, a = 1, },
-}
---]]
-
---[[
-	-- Colorblind
-theme.threatcolor = {
-	LOW = { r = 15/255, g = 133/255, b = 255/255, a= 1, },
-	MEDIUM = { r = 15/255, g = 133/255, b = 255/255, a= 1, },
-	HIGH = { r = 255/255, g = 128/255, b = 0, a = 1, },
-}
---]]
-
-theme.options = {
-	showLevel = true,
-	showName = true,
-	showSpecialText = false,
-	showSpecialText2 = false,
-	showSpecialArt = false,
-	showDangerSkull = true,
-	showSpellIcon = true,
-	showNostopSpell = true,
-	showAggroGlow = true, 
+	LOW = {r = .75, g = 1, b = 0, a = 1},
+	MEDIUM = {r = 1, g = 1, b = 0, a = 1},
+	HIGH = {r = 1, g = 0, b = 0, a = 1}
 }
 
-TidyPlates.defaultTheme = theme
-TidyPlates:ActivateTheme(TidyPlates.defaultTheme)
+TidyPlates.Template = theme
+-- Activates the template as a holder theme, until the user preference is loaded
+TidyPlates:ActivateTheme(theme)
+
+------------
+-- "Name Only" Theme
+------------
+local NameOnlyTheme = TidyPlatesUtility.copyTable(TidyPlates.Template)
+
+NameOnlyTheme.customtext = {
+	size = 12,
+	width = 200,
+	height = 16,
+	x = 0,
+	y = 12,
+	align = "CENTER",
+	anchor = "CENTER",
+	shadow = true,
+	show = true
+}
+
+NameOnlyTheme.level = {show = false}
+NameOnlyTheme.name = {show = false}
+NameOnlyTheme.skullicon = {show = false}
+NameOnlyTheme.spellicon = {show = false}
+
+-- Hex Colors
+local TextColors = {
+	FRIENDLY = {NPC = "|cff3cee35", PLAYER = "|cff5cb8ff"},
+	HOSTILE = {NPC = "|cffff3535", PLAYER = "|cfffc551b"},
+	NEUTRAL = {NPC = "|cffffee11"}
+}
+local function TextDelegate(unit)
+	return (TextColors[unit.reaction][unit.type] or "") .. unit.name
+end
+
+NameOnlyTheme.SetCustomText = TextDelegate
+TidyPlatesThemeList["None"] = NameOnlyTheme

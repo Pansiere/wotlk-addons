@@ -1,0 +1,32 @@
+## Interface: 30300
+## Title: RaidComp
+## Notes: Buff/Debuff overview of the raid, similar to MMO-Champion's RaidComp.
+## Author: Athika (SylvanasEU) and Commando (NeptulonEU)
+## Version: beta4.10
+## X-Date: 27th of May 2009
+## SavedVariables: RaidCompDB
+
+embeds.xml
+
+locales\Locale-enUS.lua
+locales\Locale-deDE.lua
+locales\Locale-zhTW.lua
+locales\Locale-zhCN.lua
+
+Core.lua
+Support.lua
+Options.lua
+Const_Categories.lua
+Const_Spells.lua
+Const_Causes.lua
+Const_TalentData.lua
+Const_Presets.lua
+Player_Fakes.lua
+Player_Record.lua
+Calendar.lua
+RaidCheck.lua
+Calculate.lua
+GUI_Support.lua
+GUI_Events.lua
+GUI_Presets.lua
+GUI.lua

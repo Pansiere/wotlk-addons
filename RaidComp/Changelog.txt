@@ -1,0 +1,94 @@
+== Beta4.10 ==
+* Redesigned GUI slightly to prevent errors caused by changes to AceGUI
+* Updated all external libraries to latest release versions
+* Updated Ace3 library to latest alpha version
+
+== Beta4.9 ==
+* Added automatic detection of Hunter and Warlock pets
+* Fixed error caused by missing quote mark in deDE localisation
+* Added Stampede (Hunter Exotic Pet) to +Bleed Damage category
+* Enduring Winter (Frost Mage) now only requires one talent point to show up as present
+
+== Beta4.8 ==
+* Added deDE locale (thanks to kyor for the translations)
+
+== Beta4.7 ==
+* Added a database window where you can view all records in the database and add people from it to your raid comp
+* Reverted simplification of talent detection handler made in beta4.5 as it didn't support non-English clients
+* Fixed Blizzard API problem which was occasionally mistakenly registering players as cross-realm
+* The list of ignored players and the raid group/calendar invite selection checkboxes should now stay in sync
+* Added Crypt Fever (+30% disease damage) to Magical category
+* Added Permafrost and Improved Mind Blast to -Healing Received category
+* Localised Database Purge messages
+* Added zhTW locale (thanks to CuteMiyu for the translations)
+* Added zhCN locale (thanks to susuxuxu for the translations)
+* Updated all external libraries to latest release versions
+
+== Beta4.6 ==
+* Added checkboxes allowing user to quickly ignore the talents of players based on raid group or invite status
+* Added buttons to clear the list of ignored player talents, overrides and fake players
+* Modified player list caption to indicate how many of the players in the list are being included in the calculation
+* Player list now also displays realm name for cross-realm players
+* Data from cross-realm players will no longer be saved during logoff, as it's unlikely to be needed again
+* Added check to prevent error when cross-realm players first join a group and are displayed as Unknown
+* Added check to prevent error when all player talent data retrieved but no class talent data available
+* Changed colour of Tentative and Standby indicators to match calendar
+* Added button to purge old records from the database to the options screen
+* Updated all external libraries to latest release versions
+
+== Beta4.5 ==
+* Updated for 3.3.0
+* Added reporting function, allowing you to output a report on the availability of a buff or spec by right-clicking on it
+* Demoralizing Roar should now only light up for Druids identified through talents as being Tanks
+* Arms Warriors should no longer be counted as providing Pummel, as they won't normally be in Berserker stance
+* Added Arcane Empowerment to the +3% Damage category
+* Added the Carrion Bird pet to the -Attack Power category
+* Added support for Tentative calendar signs
+* Simplified talent detection handler for easier maintenance
+* Added checks to talent handler to prevent certain errors where talent data is not fully available
+* Updated all external libraries to latest release versions
+
+== Beta4.4 ==
+* Added calendar support, allowing you to view the RaidComp for the event last selected on the calendar
+* Buffs not provided by a player will be dimmed when mouse is over that player
+* Fixed tooltips for spells so they show player names properly again
+* Fixed '/rc gui' command line
+* Added Power Restore (Revitalize, Rapture) to Count category
+* Split +Armor category into +Armor Aura and +Armor Totem, as Devotion Aura and Stoneskin Totem currently stack
+
+== Beta4.3 ==
+* Added detection and display of tanks, melee DPS, ranged DPS and healers
+* Added function to player tooltip allowing override based on alt spec
+* Spell tooltips now also display the names of players who have them on their alternate spec
+* Moved Purge/Rescan button to Options menu
+* Added Earth Shock and Hurricane to -Attack Speed category
+* Added Healthstone to Survival category
+* Added Damage Reduction (Hand of Sacrifice, Divine Sacrifice, Guardian Spirit, Pain Suppression) to Count category
+* Added Remove Protection (Mass Dispel/Shattering Throw) to Count category
+* Fixed detection of Hunting Party
+* Made fake ID counter reset when all fake players are removed
+* Added class icons to the Add Fake button tooltip
+
+== Beta4.2 ==
+* Dual spec support - added line to player tooltips showing alt spec
+* Changed manual colour codes to constants
+* More code commenting
+
+== Beta4.1 ==
+* Added lines to spell tooltips showing class and providers
+* Added Vindication (Paladin)
+* Changed non-damage Warlock curses to always show as Maybe
+* Removed check for Cure Disease spell (Shaman)
+* Added comments to much of the code
+
+== Beta4 ==
+* Renamed as RaidComp
+* Updated for 3.2.0
+* Added support for LibTalentQuery
+* Added support for LibGroupTalents
+* Talent scanning functions rewritten to use new libraries
+* Removed dependancy on deprecated LibQTipClick
+* Added crowd control counters
+
+== Beta2 ==
+First public version.
