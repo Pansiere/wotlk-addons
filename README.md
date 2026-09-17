@@ -132,6 +132,7 @@ Nunca deixe o addon dentro de uma pasta extra tipo `NomeDoAddon-main` ou `NomeDo
 | [SnowfallKeyPress](./SnowfallKeyPress) | Faz keybinds ativarem ao apertar a tecla, em vez de ao soltar. |
 | [SexyCooldown](./SexyCooldown) | Barra de cooldown com escala logarítmica. |
 | [Cheese](./Cheese) | Alertas visuais na tela para cooldowns/eventos importantes. |
+| [TellMeWhen](./TellMeWhen) | Notificações customizáveis de cooldowns, buffs e procs. |
 
 ## 🇧🇷 Específico do Servidor
 
