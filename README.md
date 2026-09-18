@@ -126,7 +126,7 @@ Nunca deixe o addon dentro de uma pasta extra tipo `NomeDoAddon-main` ou `NomeDo
 
 | Addon | O que faz |
 |---|---|
-| [WowSimsExporter](./WowSimsExporter) | Exporta talentos/equipamento/glifos do personagem (`/wse`) para colar em ferramentas externas — usado para importar no [armory-br](https://github.com/Pansiere/armory-br). O SimulationCraft oficial não roda em 3.3.5a; este é o addon com porte real e mantido para esse client. |
+| [ArmoryBRExport](./ArmoryBRExport) | Exporta o equipamento equipado (`/armorybr` ou `/abr`) no formato que o [armory-br](https://github.com/Pansiere/armory-br) reconhece. Addon próprio, sem libs externas — nem o SimulationCraft oficial nem o WowSimsExporter rodam de verdade nesse client (dependem de API que só existe em clients modernos). |
 
 ## 🖥️ UI & Qualidade de Vida
 

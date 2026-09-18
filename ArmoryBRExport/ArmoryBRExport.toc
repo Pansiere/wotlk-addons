@@ -1,0 +1,7 @@
+## Interface: 30300
+## Title: Armory BR Export
+## Notes: Exporta o equipamento do personagem no formato que o armory-br reconhece. Use /armorybr ou /abr.
+## Author: Pansiere
+## Version: 1.0
+
+ArmoryBRExport.lua
