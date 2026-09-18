@@ -3,8 +3,15 @@
 -- Não mexe na barra de verdade enquanto ela está em uso: mostra um
 -- retângulo "proxy" do mesmo tamanho pra arrastar, e só aplica a posição
 -- na barra real quando você confirma (rodando o comando de novo).
+--
+-- Só se move na vertical: sempre ancorado em TOP/UIParent/TOP com X preso
+-- em 0, então fica sempre perfeitamente centralizado - só existe uma
+-- coordenada pra salvar (y), então não tem como ficar "torto".
 
 local PREFIX = "|cff00ccff[CastBarMover]|r "
+local ANCHOR_POINT = "TOP"
+local ANCHOR_RELATIVE_POINT = "TOP"
+local DEFAULT_Y = -300
 
 CastBarMoverDB = CastBarMoverDB or {}
 
@@ -23,45 +30,56 @@ mover:Hide()
 
 local label = mover:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 label:SetPoint("CENTER")
-label:SetText("Cast Bar (arraste e rode /castbar de novo)")
+label:SetText("Cast Bar (arraste - só move na vertical)")
+
+local function ClampMoverX()
+    local _, _, _, _, y = mover:GetPoint()
+    mover:ClearAllPoints()
+    mover:SetPoint(ANCHOR_POINT, UIParent, ANCHOR_RELATIVE_POINT, 0, y)
+end
 
 mover:SetMovable(true)
 mover:EnableMouse(true)
 mover:RegisterForDrag("LeftButton")
-mover:SetScript("OnDragStart", mover.StartMoving)
-mover:SetScript("OnDragStop", mover.StopMovingOrSizing)
+mover:SetScript("OnDragStart", function(self)
+    self:StartMoving()
+    -- Corrige o X de volta pra 0 a cada frame do arrasto (StartMoving move
+    -- livre nos dois eixos) - o efeito visual é o retângulo só andando
+    -- para cima/baixo, nunca de lado, mesmo que o mouse se mexa na
+    -- horizontal.
+    self:SetScript("OnUpdate", ClampMoverX)
+end)
+mover:SetScript("OnDragStop", function(self)
+    self:SetScript("OnUpdate", nil)
+    self:StopMovingOrSizing()
+    ClampMoverX()
+end)
 
--- Posiciona o proxy em cima de onde a CastingBarFrame está agora, do
--- mesmo tamanho, pra começar a arrastar de um lugar que faz sentido.
+-- Posiciona o proxy do mesmo tamanho da CastingBarFrame, começando da
+-- última posição salva (ou um valor razoável se nunca foi customizada) -
+-- não tenta ler a posição nativa atual da barra real porque ela pode estar
+-- ancorada num sistema de coordenadas diferente (relativo a outro frame),
+-- o que bagunçaria a conversão pro nosso sistema fixo TOP/UIParent/TOP.
 local function SyncMoverToCastBar()
     local width, height = CastingBarFrame:GetSize()
     mover:SetSize(width, height)
-
-    local point, _, relativePoint, x, y = CastingBarFrame:GetPoint()
     mover:ClearAllPoints()
-    mover:SetPoint(point or "CENTER", UIParent, relativePoint or "CENTER", x or 0, y or 0)
+    mover:SetPoint(ANCHOR_POINT, UIParent, ANCHOR_RELATIVE_POINT, 0, CastBarMoverDB.y or DEFAULT_Y)
 end
 
--- Copia a posição do proxy pra barra real e salva pra persistir entre
--- sessões. Reancora relativo a UIParent (a tela) em vez do frame original
--- (geralmente PlayerFrame) - é isso que "destrava" a posição de verdade.
 local function ApplyMoverToCastBar()
-    local point, _, relativePoint, x, y = mover:GetPoint()
+    local _, _, _, _, y = mover:GetPoint()
 
     CastingBarFrame:ClearAllPoints()
-    CastingBarFrame:SetPoint(point, UIParent, relativePoint, x, y)
+    CastingBarFrame:SetPoint(ANCHOR_POINT, UIParent, ANCHOR_RELATIVE_POINT, 0, y)
 
-    CastBarMoverDB.point = point
-    CastBarMoverDB.relativePoint = relativePoint
-    CastBarMoverDB.x = x
     CastBarMoverDB.y = y
 end
 
 local function ApplySavedPosition()
-    local db = CastBarMoverDB
-    if db.point then
+    if CastBarMoverDB.y then
         CastingBarFrame:ClearAllPoints()
-        CastingBarFrame:SetPoint(db.point, UIParent, db.relativePoint, db.x, db.y)
+        CastingBarFrame:SetPoint(ANCHOR_POINT, UIParent, ANCHOR_RELATIVE_POINT, 0, CastBarMoverDB.y)
     end
 end
 
@@ -69,7 +87,7 @@ local function Unlock()
     SyncMoverToCastBar()
     mover:Show()
     unlocked = true
-    print(PREFIX .. "arraste o retângulo azul pra onde quiser a barra de cast. Rode /castbar (ou /cb) de novo pra confirmar.")
+    print(PREFIX .. "arraste o retângulo azul pra cima/baixo. Rode /castbar (ou /cb) de novo pra confirmar.")
 end
 
 local function Lock()
@@ -96,12 +114,6 @@ SlashCmdList["CASTBARMOVER"] = function()
     end
 end
 
--- PLAYER_LOGIN sozinho não é garantia: dispara uma vez no início do
--- carregamento, e se algo mais tarde no processo reancorar a CastingBarFrame
--- por conta própria, a posição salva fica sobrescrita silenciosamente.
--- PLAYER_ENTERING_WORLD dispara depois (inclusive de novo em qualquer
--- loading screen/teleporte) - reaplicar ali também é uma garantia extra sem
--- efeito colateral, já que é sempre a mesma posição salva sendo reaplicada.
 local loader = CreateFrame("Frame")
 loader:RegisterEvent("PLAYER_LOGIN")
 loader:RegisterEvent("PLAYER_ENTERING_WORLD")
