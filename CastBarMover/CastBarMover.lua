@@ -96,8 +96,15 @@ SlashCmdList["CASTBARMOVER"] = function()
     end
 end
 
+-- PLAYER_LOGIN sozinho não é garantia: dispara uma vez no início do
+-- carregamento, e se algo mais tarde no processo reancorar a CastingBarFrame
+-- por conta própria, a posição salva fica sobrescrita silenciosamente.
+-- PLAYER_ENTERING_WORLD dispara depois (inclusive de novo em qualquer
+-- loading screen/teleporte) - reaplicar ali também é uma garantia extra sem
+-- efeito colateral, já que é sempre a mesma posição salva sendo reaplicada.
 local loader = CreateFrame("Frame")
 loader:RegisterEvent("PLAYER_LOGIN")
+loader:RegisterEvent("PLAYER_ENTERING_WORLD")
 loader:SetScript("OnEvent", function()
     local ok, err = pcall(ApplySavedPosition)
     if not ok then
