@@ -29,6 +29,21 @@ local function Slugify(itemName)
     return itemName:lower():gsub("%s+", "_"):gsub("[^%w_]", "")
 end
 
+-- Gemas engastadas nos sockets do item, na ordem dos sockets (até 3).
+-- GetItemGem retorna nil pro socket quando ele está vazio ou o item não
+-- tem socket naquela posição — ambos os casos são pulados.
+local function GetGemIds(itemLink)
+    local gemIds = {}
+    for socketIndex = 1, 3 do
+        local _, gemLink = GetItemGem(itemLink, socketIndex)
+        local gemId = gemLink and gemLink:match("item:(%d+)")
+        if gemId then
+            table.insert(gemIds, gemId)
+        end
+    end
+    return gemIds
+end
+
 local function BuildExportText()
     local lines = {}
     for _, entry in ipairs(SLOT_ORDER) do
@@ -38,7 +53,14 @@ local function BuildExportText()
             if itemId then
                 local itemName = GetItemInfo(link)
                 local slug = itemName and Slugify(itemName) or "item"
-                table.insert(lines, entry.name .. "=" .. slug .. ",id=" .. itemId)
+                local line = entry.name .. "=" .. slug .. ",id=" .. itemId
+
+                local gemIds = GetGemIds(link)
+                if #gemIds > 0 then
+                    line = line .. ",gems=" .. table.concat(gemIds, "/")
+                end
+
+                table.insert(lines, line)
             end
         end
     end
