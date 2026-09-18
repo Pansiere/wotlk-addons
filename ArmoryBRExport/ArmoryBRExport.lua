@@ -25,6 +25,54 @@ local SLOT_ORDER = {
     { slot = INVSLOT_RANGED, name = "ranged" },
 }
 
+-- raceID (3º retorno de UnitRace) em vez do nome textual: não depende do
+-- idioma do client nem de variações de grafia ("Undead" vs "Scourge").
+local RACE_ID_SLUG = {
+    [1] = "human", [2] = "orc", [3] = "dwarf", [4] = "night_elf",
+    [5] = "undead", [6] = "tauren", [7] = "gnome", [8] = "troll",
+    [10] = "blood_elf", [11] = "draenei",
+}
+
+-- skillLine (7º retorno de GetProfessionInfo) em vez do nome: mesmo motivo
+-- - independe do idioma do client. IDs estáveis desde sempre no WoW.
+local PROFESSION_SKILLLINE_SLUG = {
+    [171] = "alchemy", [164] = "blacksmithing", [333] = "enchanting",
+    [202] = "engineering", [182] = "herbalism", [773] = "inscription",
+    [755] = "jewelcrafting", [165] = "leatherworking", [186] = "mining",
+    [393] = "skinning", [197] = "tailoring", [185] = "cooking",
+    [129] = "first_aid", [356] = "fishing",
+}
+
+local function BuildCharacterMetaLines()
+    local lines = {}
+
+    table.insert(lines, "name=" .. UnitName("player"))
+
+    local _, _, raceId = UnitRace("player")
+    local raceSlug = RACE_ID_SLUG[raceId]
+    if raceSlug then
+        table.insert(lines, "race=" .. raceSlug)
+    end
+
+    table.insert(lines, "level=" .. UnitLevel("player"))
+
+    -- pairs(), não ipairs(): GetProfessions() retorna 6 valores na ordem
+    -- fixa (prof1, prof2, archaeology, fishing, cooking, firstAid), e
+    -- archaeology é sempre nil em WotLK — ipairs pararia aí e nunca
+    -- chegaria em fishing/cooking/firstAid, que vêm depois na lista.
+    for _, professionIndex in pairs({ GetProfessions() }) do
+        if professionIndex then
+            local _, _, rank, _, _, _, skillLine = GetProfessionInfo(professionIndex)
+            local slug = PROFESSION_SKILLLINE_SLUG[skillLine]
+            if slug then
+                table.insert(lines, "profession=" .. slug .. ":" .. (rank or 0))
+            end
+        end
+    end
+
+    return lines
+end
+
 local function Slugify(itemName)
     return itemName:lower():gsub("%s+", "_"):gsub("[^%w_]", "")
 end
@@ -45,7 +93,7 @@ local function GetGemIds(itemLink)
 end
 
 local function BuildExportText()
-    local lines = {}
+    local lines = BuildCharacterMetaLines()
     for _, entry in ipairs(SLOT_ORDER) do
         local link = GetInventoryItemLink("player", entry.slot)
         if link then
