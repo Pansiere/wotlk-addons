@@ -44,9 +44,6 @@ Nunca deixe o addon dentro de uma pasta extra tipo `NomeDoAddon-main` ou `NomeDo
 | [DBM-WorldEvents](./DBM-WorldEvents) | Avisos de eventos de mundo/feriados. |
 | [DBM-PvP](./DBM-PvP) | Avisos para arenas e campos de batalha. |
 | [GTFO](./GTFO) | Alerta sonoro imediato quando você está parado em cima de dano no chão. |
-| [CDUsed](./CDUsed) | Avisa a raid quando alguém usa um cooldown importante. |
-| [RaidCooldowns](./RaidCooldowns) | Rastreia, transmite e exibe os cooldowns de toda a raid. |
-| [Flump](./Flump) | Anuncia cooldowns, portais, banquetes e afins no chat. |
 
 ## 💉 Cura (Healer)
 
@@ -62,7 +59,6 @@ Nunca deixe o addon dentro de uma pasta extra tipo `NomeDoAddon-main` ou `NomeDo
 | [MRT](./MRT) | Method Raid Tools — notas de raid, marcações no mundo, cooldowns e ferramentas de raid leader. |
 | [RaidBuffStatus](./RaidBuffStatus) | Reporta buffs, consumíveis, mana e AFK de todo mundo na raid. |
 | [RaidComp](./RaidComp) | Visão geral de quais buffs/debuffs a composição da raid cobre. |
-| [RaidSlackCheck](./RaidSlackCheck) | Confere poção, flask e comida de cada um antes do pull (`/rsc`). |
 
 ## 🎯 Threat
 
@@ -138,7 +134,6 @@ Nunca deixe o addon dentro de uma pasta extra tipo `NomeDoAddon-main` ou `NomeDo
 | [OmniCC_Config](./OmniCC_Config) | Tela de configuração do OmniCC. |
 | [UnitFramesImproved](./UnitFramesImproved) | Melhora visualmente as unit frames padrão da Blizzard. |
 | [SnowfallKeyPress](./SnowfallKeyPress) | Faz keybinds ativarem ao apertar a tecla, em vez de ao soltar. |
-| [SexyCooldown](./SexyCooldown) | Barra de cooldown com escala logarítmica. |
 | [Cheese](./Cheese) | Alertas visuais na tela para cooldowns/eventos importantes. |
 | [TellMeWhen](./TellMeWhen) | Notificações customizáveis de cooldowns, buffs e procs. |
 
