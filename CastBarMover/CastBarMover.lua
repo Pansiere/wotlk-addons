@@ -13,6 +13,16 @@ local ANCHOR_POINT = "TOP"
 local ANCHOR_RELATIVE_POINT = "TOP"
 local DEFAULT_Y = -300
 
+-- Tamanho nativo real da CastingBarFrame, confirmado no FrameXML original
+-- da Blizzard (<Size><AbsDimension x="195" y="13"/></Size> em
+-- CastingBarFrame.xml) - nunca lido dinamicamente via GetSize(). Ler o
+-- tamanho "atual" era o bug: se algo (inclusive este addon numa versão
+-- anterior) já tivesse deixado o tamanho real errado, o proxy e qualquer
+-- reaplicação futura herdavam e perpetuavam o valor errado. Fixando aqui,
+-- toda aplicação de posição também restaura o tamanho certo de brinde.
+local CASTBAR_WIDTH = 195
+local CASTBAR_HEIGHT = 13
+
 CastBarMoverDB = CastBarMoverDB or {}
 
 local unlocked = false
@@ -55,14 +65,13 @@ mover:SetScript("OnDragStop", function(self)
     ClampMoverX()
 end)
 
--- Posiciona o proxy do mesmo tamanho da CastingBarFrame, começando da
--- última posição salva (ou um valor razoável se nunca foi customizada) -
--- não tenta ler a posição nativa atual da barra real porque ela pode estar
--- ancorada num sistema de coordenadas diferente (relativo a outro frame),
--- o que bagunçaria a conversão pro nosso sistema fixo TOP/UIParent/TOP.
+-- Posiciona o proxy com o tamanho nativo fixo, começando da última posição
+-- salva (ou um valor razoável se nunca foi customizada) - não tenta ler a
+-- posição nativa atual da barra real porque ela pode estar ancorada num
+-- sistema de coordenadas diferente (relativo a outro frame), o que
+-- bagunçaria a conversão pro nosso sistema fixo TOP/UIParent/TOP.
 local function SyncMoverToCastBar()
-    local width, height = CastingBarFrame:GetSize()
-    mover:SetSize(width, height)
+    mover:SetSize(CASTBAR_WIDTH, CASTBAR_HEIGHT)
     mover:ClearAllPoints()
     mover:SetPoint(ANCHOR_POINT, UIParent, ANCHOR_RELATIVE_POINT, 0, CastBarMoverDB.y or DEFAULT_Y)
 end
@@ -70,6 +79,7 @@ end
 local function ApplyMoverToCastBar()
     local _, _, _, _, y = mover:GetPoint()
 
+    CastingBarFrame:SetSize(CASTBAR_WIDTH, CASTBAR_HEIGHT)
     CastingBarFrame:ClearAllPoints()
     CastingBarFrame:SetPoint(ANCHOR_POINT, UIParent, ANCHOR_RELATIVE_POINT, 0, y)
 
@@ -78,6 +88,7 @@ end
 
 local function ApplySavedPosition()
     if CastBarMoverDB.y then
+        CastingBarFrame:SetSize(CASTBAR_WIDTH, CASTBAR_HEIGHT)
         CastingBarFrame:ClearAllPoints()
         CastingBarFrame:SetPoint(ANCHOR_POINT, UIParent, ANCHOR_RELATIVE_POINT, 0, CastBarMoverDB.y)
     end
