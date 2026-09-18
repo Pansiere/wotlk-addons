@@ -22,6 +22,7 @@ Nunca deixe o addon dentro de uma pasta extra tipo `NomeDoAddon-main` ou `NomeDo
 - [🩸 Nameplates](#-nameplates)
 - [🎒 Inventário](#-inventário)
 - [⚔️ Equipamento](#️-equipamento)
+- [📤 Export de Personagem](#-export-de-personagem)
 - [🖥️ UI & Qualidade de Vida](#️-ui--qualidade-de-vida)
 - [🇧🇷 Específico do Servidor](#-específico-do-servidor)
 
@@ -120,6 +121,12 @@ Nunca deixe o addon dentro de uma pasta extra tipo `NomeDoAddon-main` ou `NomeDo
 | [WoWEquip](./WoWEquip) | Simula trocas de equipamento e compara status antes de vestir (tipo CT_Profiles). |
 | [BonusScanner](./BonusScanner) | Soma os bônus cumulativos de todo o equipamento. |
 | [DrDamage](./DrDamage) | Theorycraft in-game: calcula dano/cura real com base em gear, talentos e buffs. |
+
+## 📤 Export de Personagem
+
+| Addon | O que faz |
+|---|---|
+| [WowSimsExporter](./WowSimsExporter) | Exporta talentos/equipamento/glifos do personagem (`/wse`) para colar em ferramentas externas — usado para importar no [armory-br](https://github.com/Pansiere/armory-br). O SimulationCraft oficial não roda em 3.3.5a; este é o addon com porte real e mantido para esse client. |
 
 ## 🖥️ UI & Qualidade de Vida
 

@@ -1,0 +1,39 @@
+## Title: WowSimsExporter
+## Version: v3.2.4
+## Author: generalwrex(Natop), namreeb, coolmodi(FelixPflaum), riotdog, polynomix
+## Interface: 50504, 50503, 40402, 38001, 20505, 11508
+## Notes: This is an exporter written to quickly export your character to https://www.wowsims.com/ for simulations.
+## SavedVariables: WSEDB
+## OptionalDeps: Ace3
+## X-Curse-Project-ID: 590920
+## X-Wago-ID: aN0Y936j
+## X-WoWI-ID: 26823
+## Category: Development Tools
+## Category-deDE: Entwicklungstools
+## Category-esES: Herramientas de Desarrollo
+## Category-esMX: Herramientas de Desarrollo
+## Category-frFR: Outils de Développement
+## Category-itIT: Strumenti di sviluppo
+## Category-koKR: 개발 도구
+## Category-ptBR: Ferramentas de Desenvolvimento
+## Category-ruRU: Инструменты разработки
+## Category-zhCN: 开发工具
+## Category-zhTW: 開發工具
+
+embeds.xml
+
+extras.lua [AllowLoadGameType vanilla, tbc, wrath, cata]
+Shared.lua
+Conditional_Mists.lua [AllowLoadGameType mists]
+Conditional_Wrath.lua  [AllowLoadGameType wrath]
+Conditional_Vanilla.lua  [AllowLoadGameType vanilla]
+Conditional_Cata.lua [AllowLoadGameType cata]
+Conditional_TBC.lua [AllowLoadGameType tbc]
+CataReforgeDetection.lua [AllowLoadGameType cata]
+SavedDataManager.lua
+ExportStructures/ItemSpec.lua
+ExportStructures/EquipmentSpec.lua
+ExportStructures/Misc.lua
+ExportStructures/Character.lua
+UI.lua
+WowSimsExporter.lua
