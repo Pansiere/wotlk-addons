@@ -1,0 +1,8 @@
+## Interface: 30300
+## Title: Cast Bar Mover
+## Notes: Destrava a barra de cast nativa (CastingBarFrame) para reposicionar. Use /castbar ou /cb.
+## Author: Pansiere
+## Version: 1.0
+## SavedVariables: CastBarMoverDB
+
+CastBarMover.lua

@@ -133,6 +133,7 @@ Nunca deixe o addon dentro de uma pasta extra tipo `NomeDoAddon-main` ou `NomeDo
 | Addon | O que faz |
 |---|---|
 | [ACP](./ACP) | Addon Control Panel — gerenciador de addons dentro do jogo, com suporte a addons multi-parte. |
+| [CastBarMover](./CastBarMover) | Destrava a barra de cast nativa da Blizzard para arrastar e reposicionar (`/castbar` ou `/cb`). Addon próprio, sem libs externas. |
 | [OmniCC](./OmniCC) | Mostra a contagem regressiva em número sobre os ícones de cooldown. |
 | [OmniCC_Config](./OmniCC_Config) | Tela de configuração do OmniCC. |
 | [UnitFramesImproved](./UnitFramesImproved) | Melhora visualmente as unit frames padrão da Blizzard. |
