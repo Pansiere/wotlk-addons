@@ -33,14 +33,22 @@ local RACE_ID_SLUG = {
     [10] = "blood_elf", [11] = "draenei",
 }
 
--- skillLine (7º retorno de GetProfessionInfo) em vez do nome: mesmo motivo
--- - independe do idioma do client. IDs estáveis desde sempre no WoW.
-local PROFESSION_SKILLLINE_SLUG = {
-    [171] = "alchemy", [164] = "blacksmithing", [333] = "enchanting",
-    [202] = "engineering", [182] = "herbalism", [773] = "inscription",
-    [755] = "jewelcrafting", [165] = "leatherworking", [186] = "mining",
-    [393] = "skinning", [197] = "tailoring", [185] = "cooking",
-    [129] = "first_aid", [356] = "fishing",
+-- GetProfessionInfo só existe a partir do Patch 4.0.1 (Cataclysm) - em
+-- 3.3.5a chamar essa função é erro fatal de Lua ("attempt to call a nil
+-- value"), que para a execução no meio e explica um /armorybr que "não
+-- fazia nada" (o comando estava registrado, só a função crashava antes de
+-- mostrar a janela). GetSkillLineInfo é a API de antes: foi removida no
+-- mesmo patch que introduziu GetProfessionInfo, ou seja, existe em 3.3.5a.
+-- Ela não dá o skillLine numérico, só o nome já traduzido pro idioma do
+-- client - comparamos contra nomes em inglês porque o client instalado é
+-- enUS (Data/enUS na pasta do jogo).
+local PROFESSION_NAME_SLUG = {
+    ["Alchemy"] = "alchemy", ["Blacksmithing"] = "blacksmithing",
+    ["Enchanting"] = "enchanting", ["Engineering"] = "engineering",
+    ["Herbalism"] = "herbalism", ["Inscription"] = "inscription",
+    ["Jewelcrafting"] = "jewelcrafting", ["Leatherworking"] = "leatherworking",
+    ["Mining"] = "mining", ["Skinning"] = "skinning", ["Tailoring"] = "tailoring",
+    ["Cooking"] = "cooking", ["First Aid"] = "first_aid", ["Fishing"] = "fishing",
 }
 
 local function BuildCharacterMetaLines()
@@ -60,13 +68,11 @@ local function BuildCharacterMetaLines()
     -- fixa (prof1, prof2, archaeology, fishing, cooking, firstAid), e
     -- archaeology é sempre nil em WotLK — ipairs pararia aí e nunca
     -- chegaria em fishing/cooking/firstAid, que vêm depois na lista.
-    for _, professionIndex in pairs({ GetProfessions() }) do
-        if professionIndex then
-            local _, _, rank, _, _, _, skillLine = GetProfessionInfo(professionIndex)
-            local slug = PROFESSION_SKILLLINE_SLUG[skillLine]
-            if slug then
-                table.insert(lines, "profession=" .. slug .. ":" .. (rank or 0))
-            end
+    for i = 1, GetNumSkillLines() do
+        local skillName, isHeader, _, skillRank = GetSkillLineInfo(i)
+        local slug = (not isHeader) and PROFESSION_NAME_SLUG[skillName] or nil
+        if slug then
+            table.insert(lines, "profession=" .. slug .. ":" .. (skillRank or 0))
         end
     end
 
@@ -157,8 +163,19 @@ editBox:SetScript("OnEscapePressed", function()
 end)
 scrollFrame:SetScrollChild(editBox)
 
+-- pcall pra nunca falhar em silêncio: sem isso, um erro de Lua no meio da
+-- geração do texto (ex.: chamar uma API que não existe nesse client) para a
+-- execução sem avisar nada — foi exatamente assim que a versão anterior
+-- desse addon "não fazia nada" ao rodar o comando.
 local function OpenExportWindow()
-    editBox:SetText(BuildExportText())
+    local ok, textOrError = pcall(BuildExportText)
+
+    if not ok then
+        print("|cffFF0000[ArmoryBRExport] Erro ao gerar o export:|r " .. tostring(textOrError))
+        return
+    end
+
+    editBox:SetText(textOrError)
     frame:Show()
     editBox:SetFocus()
     editBox:HighlightText()
