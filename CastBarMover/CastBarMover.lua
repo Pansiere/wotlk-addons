@@ -23,6 +23,14 @@ local DEFAULT_Y = 250
 local CASTBAR_WIDTH = 195
 local CASTBAR_HEIGHT = 13
 
+-- SetUserPlaced(true) (usado mais abaixo) recusa rodar com
+-- "Frame CastingBarFrame is not movable or resizable" se o frame não
+-- estiver marcado como movable/resizable — mesmo sendo posicionado só
+-- via SetPoint manual, nunca via StartMoving() nativo. Precisa marcar os
+-- dois uma vez, o quanto antes, pra SetUserPlaced funcionar depois.
+CastingBarFrame:SetMovable(true)
+CastingBarFrame:SetResizable(true)
+
 CastBarMoverDB = CastBarMoverDB or {}
 
 local unlocked = false
