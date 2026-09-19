@@ -196,9 +196,15 @@ L["BONUSSCANNER_PATTERNS_PASSIVE"] = {
 --Haste
 	--{ pattern = "Improves haste rating by (%d+)%.", effect = "HASTE" },
 	
---MASTERY 
-	--This version attempts to work on all locals at once.	
-	{ pattern = string.gsub(ITEM_MOD_MASTERY_RATING, "%%d", "(%%d+)%%"), effect = "MASTERY"}, -- Mastery
+--MASTERY
+	--This version attempts to work on all locals at once.
+	-- ITEM_MOD_MASTERY_RATING não existe no client 3.3.5a (Mastery só foi
+	-- introduzido no Cataclysm) — essa global vem nil, e string.gsub(nil, ...)
+	-- quebra com erro logo no carregamento do addon, travando todo o resto
+	-- deste arquivo (as 200+ linhas depois desta nunca executavam). Como
+	-- Mastery nunca vai aparecer num item do WotLK mesmo, não faz sentido
+	-- nem com o valor fixo em inglês — deixa comentado.
+	--{ pattern = string.gsub(ITEM_MOD_MASTERY_RATING, "%%d", "(%%d+)%%"), effect = "MASTERY"}, -- Mastery
 	--{ pattern = "Increases your mastery rating by (%d+)%.+", effect = "MASTERY"}, -- Mastery
 --Penetration
 	{ pattern = "Decreases the magical resistances of your spell targets by (%d+).", effect = "SPELLPEN" },
