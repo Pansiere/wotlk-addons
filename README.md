@@ -44,6 +44,7 @@ Nunca deixe o addon dentro de uma pasta extra tipo `NomeDoAddon-main` ou `NomeDo
 | [DBM-WorldEvents](./DBM-WorldEvents) | Avisos de eventos de mundo/feriados. |
 | [DBM-PvP](./DBM-PvP) | Avisos para arenas e campos de batalha. |
 | [GTFO](./GTFO) | Alerta sonoro imediato quando você está parado em cima de dano no chão. |
+| [RaidCooldowns](./RaidCooldowns) | Rastreia, transmite e exibe os cooldowns de toda a raid. |
 
 ## 💉 Cura (Healer)
 
@@ -135,7 +136,6 @@ Nunca deixe o addon dentro de uma pasta extra tipo `NomeDoAddon-main` ou `NomeDo
 | [UnitFramesImproved](./UnitFramesImproved) | Melhora visualmente as unit frames padrão da Blizzard. |
 | [SnowfallKeyPress](./SnowfallKeyPress) | Faz keybinds ativarem ao apertar a tecla, em vez de ao soltar. |
 | [Cheese](./Cheese) | Alertas visuais na tela para cooldowns/eventos importantes. |
-| [TellMeWhen](./TellMeWhen) | Notificações customizáveis de cooldowns, buffs e procs. |
 
 ## 🇧🇷 Específico do Servidor
 
