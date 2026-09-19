@@ -84,6 +84,20 @@ local function SyncMoverToCastBar()
     mover:SetPoint(ANCHOR_POINT, UIParent, ANCHOR_RELATIVE_POINT, 0, CastBarMoverDB.y or DEFAULT_Y)
 end
 
+-- SetUserPlaced(true) é o que faz a posição realmente "pegar" pro resto
+-- da sessão, e não é redundante com SetPoint. O UIParent.lua nativo da
+-- Blizzard tem uma tabela de frames "gerenciados"
+-- (UIPARENT_MANAGED_FRAME_POSITIONS) que inclui a CastingBarFrame, e uma
+-- função (UIParent_ManageFramePosition) que reaplica a posição "oficial"
+-- dela via SetPoint toda vez que roda — só que ela pula qualquer frame
+-- com IsUserPlaced() == true. Essa função dispara de novo o tempo todo
+-- durante o jogo, não só no login: quando a DurabilityFrame aparece
+-- (equipamento danificado, ex. após um wipe), a bonus action bar ou a
+-- vehicle bar aparecem/somem (mecânicas de boss, veículos), a pet bar ou
+-- a barra de reputação aparecem/somem, ou a cada troca de alvo. Sem
+-- marcar UserPlaced, a Blizzard "rouba" a posição de volta cada vez que
+-- um desses eventos dispara em raid — daí a barra "fugir" pro lugar
+-- nativo em pleno combate mesmo com a posição salva certinha.
 local function ApplyMoverToCastBar()
     local _, _, _, _, y = mover:GetPoint()
 
@@ -91,6 +105,7 @@ local function ApplyMoverToCastBar()
     CastingBarFrame:SetSize(CASTBAR_WIDTH, CASTBAR_HEIGHT)
     CastingBarFrame:ClearAllPoints()
     CastingBarFrame:SetPoint(ANCHOR_POINT, UIParent, ANCHOR_RELATIVE_POINT, 0, y)
+    CastingBarFrame:SetUserPlaced(true)
 
     CastBarMoverDB.y = y
 end
@@ -101,6 +116,7 @@ local function ApplySavedPosition()
         CastingBarFrame:SetSize(CASTBAR_WIDTH, CASTBAR_HEIGHT)
         CastingBarFrame:ClearAllPoints()
         CastingBarFrame:SetPoint(ANCHOR_POINT, UIParent, ANCHOR_RELATIVE_POINT, 0, CastBarMoverDB.y)
+        CastingBarFrame:SetUserPlaced(true)
     end
 end
 
@@ -135,18 +151,6 @@ SlashCmdList["CASTBARMOVER"] = function()
     end
 end
 
--- Aplicar direto no handler do evento às vezes não "pega": CastingBarFrame
--- é um frame nativo crítico, e mexer nele bem no instante do login pode
--- cair numa janela de proteção do client (sem gerar erro Lua nenhum - a
--- chamada roda normal, só o resultado visual não reflete). Em vez de
--- aplicar uma vez só ali, tenta de novo em alguns instantes seguintes
--- (sem C_Timer, que não existe em 3.3.5a: um frame com OnUpdate contando
--- o tempo decorrido é a forma clássica de fazer "esperar X segundos").
-local retryFrame = CreateFrame("Frame")
-local retryElapsed = 0
-local retryMarks = { 0.5, 1.5, 3 }
-local retryIndex = 0
-
 local function TryApplySavedPosition()
     local ok, err = pcall(ApplySavedPosition)
     if not ok then
@@ -154,25 +158,13 @@ local function TryApplySavedPosition()
     end
 end
 
-local function OnRetryUpdate(self, elapsed)
-    retryElapsed = retryElapsed + elapsed
-    if retryIndex < #retryMarks and retryElapsed >= retryMarks[retryIndex + 1] then
-        retryIndex = retryIndex + 1
-        TryApplySavedPosition()
-        if retryIndex >= #retryMarks then
-            self:SetScript("OnUpdate", nil)
-        end
-    end
-end
-
+-- PLAYER_LOGIN cobre o primeiro login da sessão; PLAYER_ENTERING_WORLD
+-- cobre toda troca de mapa/loading screen depois disso. Uma aplicação em
+-- cada um já basta: assim que SetUserPlaced(true) roda pela primeira vez
+-- (dentro de ApplySavedPosition), a Blizzard para de reposicionar a
+-- barra pelo resto da sessão — não existe mais janela de corrida pra
+-- justificar tentar de novo várias vezes.
 local loader = CreateFrame("Frame")
 loader:RegisterEvent("PLAYER_LOGIN")
 loader:RegisterEvent("PLAYER_ENTERING_WORLD")
-loader:SetScript("OnEvent", function()
-    TryApplySavedPosition()
-    -- reinicia as tentativas seguintes (PLAYER_ENTERING_WORLD pode disparar
-    -- de novo em qualquer loading screen, então vale tentar de novo cada vez)
-    retryElapsed = 0
-    retryIndex = 0
-    retryFrame:SetScript("OnUpdate", OnRetryUpdate)
-end)
+loader:SetScript("OnEvent", TryApplySavedPosition)
